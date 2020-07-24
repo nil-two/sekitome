@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: ed3f63fe1b7c2a04da4cf87935a7f5ba
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - ishitsumikoUpSprite: {instanceID: 0}
+  - ishitsumikoLeftSprite: {instanceID: 0}
+  - ishitsumikoRightSprite: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
