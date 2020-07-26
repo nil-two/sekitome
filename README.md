@@ -3,6 +3,16 @@
 
 落ちてくるnil2を落とさないようにするゲーム。
 
+ダウンロード
+------------
+
+- [Windows版](https://github.com/kusabashira/sekitome/releases/download/v1.0.0/sekitome_windows.zip)
+- [Mac版](https://github.com/kusabashira/sekitome/releases/download/v1.0.0/sekitome_mac.zip)
+- [Linux版](https://github.com/kusabashira/sekitome/releases/download/v1.0.0/sekitome_linux.zip)
+
+Mac版は動作未検証です。
+また、Linux版は実行ファイルに権限が付与されていないのでchmodを使って実行権限を付与する必要があります。
+
 操作方法
 --------
 
