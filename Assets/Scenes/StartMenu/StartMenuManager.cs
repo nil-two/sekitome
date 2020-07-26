@@ -9,22 +9,19 @@ public class StartMenuManager : MonoBehaviour
     private const int MOVE_MENU_TYPE_DOWN   = 1;
     private const int MOVE_MENU_TYPE_ESCAPE = 2;
 
-    public GameObject startMenu;
-    public GameObject resultMenu;
-    public GameObject quitMenu;
+    public Animator fade;
+    public MenuBehaviour startMenu;
+    public MenuBehaviour resultMenu;
+    public MenuBehaviour quitMenu;
+    public float sceneTransitionSec;
 
-    private MenuBehavior[] menus;
+    private MenuBehaviour[] menus;
     private int menuI;
 
     void Start()
     {
-        menus = new MenuBehavior[] {
-            startMenu.GetComponent<MenuBehavior>(),
-            resultMenu.GetComponent<MenuBehavior>(),
-            quitMenu.GetComponent<MenuBehavior>(),
-        };
+        menus = new MenuBehaviour[] {startMenu, resultMenu, quitMenu};
         menuI = 0;
-
         UpdateMenu();
     }
 
@@ -38,11 +35,11 @@ public class StartMenuManager : MonoBehaviour
         {
             MoveMenu(MOVE_MENU_TYPE_DOWN);
         }       
-        else if (Input.GetKeyDown(KeyCode.Escape))
+        else if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.X))
         {
             MoveMenu(MOVE_MENU_TYPE_ESCAPE);
         }       
-        else if (Input.GetKeyDown(KeyCode.Return))
+        else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Z))
         {
             SelectMenu();
         }       
@@ -94,22 +91,42 @@ public class StartMenuManager : MonoBehaviour
 
     void SelectMenu()
     {
-        if (menus[menuI].IsQuit())
+        var menu = menus[menuI];
+        if (menu.IsQuit())
         {
-            QuitGame();
+            Quit();
             return;
         }
 
-        var dstSceneName = menus[menuI].GetDstSceneName();
+        var dstSceneName = menu.GetDstSceneName();
         if (dstSceneName != null)
         {
-            SceneManager.LoadScene(dstSceneName);
+            MoveScene(dstSceneName);
             return;
         }
     }
 
-    void QuitGame()
+    void MoveScene(string dstSceneName)
     {
+        fade.SetBool("fade", true);
+        StartCoroutine(WaitLoadScene(dstSceneName, sceneTransitionSec));
+    }
+
+    IEnumerator WaitLoadScene(string dstSceneName, float waitSec)
+    {
+        yield return new WaitForSeconds(waitSec);
+        SceneManager.LoadScene(dstSceneName);
+    }
+
+    void Quit()
+    {
+        fade.SetBool("fade", true);
+        StartCoroutine(WaitQuit(sceneTransitionSec));
+    }
+
+    IEnumerator WaitQuit(float waitSec)
+    {
+        yield return new WaitForSeconds(waitSec);
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
         #elif UNITY_STANDALONE

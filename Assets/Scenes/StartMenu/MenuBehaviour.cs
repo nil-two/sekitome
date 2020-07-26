@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MenuBehavior : MonoBehaviour
+public class MenuBehaviour : MonoBehaviour
 {
-    public string dstSceneName = null;
-    public bool isQuit         = false;
+    public string dstSceneName;
+    public bool isQuit;
 
     private Text text;
 
@@ -22,7 +22,7 @@ public class MenuBehavior : MonoBehaviour
 
     public void Inactivate()
     {
-        text.color = new Color(0.6f, 0.6f, 0.6f, 1f);
+        text.color = new Color(0.8f, 0.8f, 0.8f, 1f);
     }
 
     public bool IsQuit()

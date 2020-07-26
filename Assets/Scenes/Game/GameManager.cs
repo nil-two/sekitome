@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public const int GAME_STATUS_NOT_STARTED = 0;
-    public const int GAME_STATUS_STARTED     = 1;
-    public const int GAME_STATUS_FINISHED    = 2;
+    public const int GAME_STATUS_STARTED  = 0;
+    public const int GAME_STATUS_FINISHED = 1;
 
     public const int NIL2_TYPE_NONE    = 0;
     public const int NIL2_TYPE_RED     = 1;
@@ -26,15 +26,19 @@ public class GameManager : MonoBehaviour
 
     public GameObject ishitsumiko;
     public GameObject nil2Prefab;
+    public GameObject scoreUpdatedLabel;
     public GameObject restartGuideLabel;
     public GameObject quitGuideLabel;
     public Text lifeText;
     public Text scoreText;
+    public Animator fade;
     public int initialLife;
+    public float introSec;
     public float spawnClockSec;
     public float spawnClockSecMin;
     public float accerateSpawnClockClockSec;
     public float accerateSpawnClockSec;
+    public float sceneTransitionSec;
     public int nil2RedScore;
     public int nil2BlueScore;
     public int nil2GreenScore;
@@ -79,8 +83,8 @@ public class GameManager : MonoBehaviour
         score          = 0;
         scoreText.text = score.ToString();
 
-        InvokeRepeating("SpawnNil2",          spawnClockSec,              spawnClockSec);
-        InvokeRepeating("AccerateSpawnClock", accerateSpawnClockClockSec, accerateSpawnClockClockSec);
+        InvokeRepeating("SpawnNil2",          introSec+spawnClockSec,              spawnClockSec);
+        InvokeRepeating("AccerateSpawnClock", introSec+accerateSpawnClockClockSec, accerateSpawnClockClockSec);
     }
 
     void Update()
@@ -89,9 +93,9 @@ public class GameManager : MonoBehaviour
         {
             RestartGame();
         }
-        else if (Input.GetKeyDown(KeyCode.Escape))
+        else if (Input.GetKeyDown(KeyCode.Escape) || (gameStatus == GAME_STATUS_FINISHED && Input.GetKeyDown(KeyCode.X)))
         {
-            QuitGame();
+            BackToStartMenu();
         }
     }
 
@@ -110,6 +114,9 @@ public class GameManager : MonoBehaviour
 
     void FinishGame()
     {
+        Destroy(ishitsumiko.GetComponent<PlayerController>());
+        Destroy(ishitsumiko.GetComponent<IshitsumikoBehaviour>());
+
         CancelInvoke("SpawnNil2");
         CancelInvoke("AccerateSpawnClock");
 
@@ -117,18 +124,34 @@ public class GameManager : MonoBehaviour
         restartGuideLabel.SetActive(true);
         quitGuideLabel.SetActive(true);
 
-        Destroy(ishitsumiko.GetComponent<PlayerController>());
-        Destroy(ishitsumiko.GetComponent<IshitsumikoBehaviour>());
+        var date          = DateTime.Today.ToString("yyyy/MM/dd");
+        var scoreRecorded = SaveData.RecordScore(10, score, date);
+        if (scoreRecorded)
+        {
+            scoreUpdatedLabel.SetActive(true);
+        }
     }
 
     void RestartGame()
     {
-        SceneManager.LoadScene("GameScene");
+        MoveScene("GameScene");
     }
 
-    void QuitGame()
+    void BackToStartMenu()
     {
-        SceneManager.LoadScene("StartMenuScene");
+        MoveScene("StartMenuScene");
+    }
+
+    void MoveScene(string dstSceneName)
+    {
+        fade.SetBool("fade", true);
+        StartCoroutine(WaitLoadScene(dstSceneName, sceneTransitionSec));
+    }
+
+    IEnumerator WaitLoadScene(string dstSceneName, float waitSec)
+    {
+        yield return new WaitForSeconds(waitSec);
+        SceneManager.LoadScene(dstSceneName);
     }
 
     int GetNil2Score(int nil2Type)
@@ -148,7 +171,7 @@ public class GameManager : MonoBehaviour
 
     public int GetNil2TypeRandom()
     {
-        var nil2TypeSeed = Random.Range(0, 100);
+        var nil2TypeSeed = UnityEngine.Random.Range(0, 100);
         if      (nil2TypeSeed < nil2RedBorder)     return NIL2_TYPE_RED;
         else if (nil2TypeSeed < nil2BlueBorder)    return NIL2_TYPE_BLUE;
         else if (nil2TypeSeed < nil2GreenBorder)   return NIL2_TYPE_GREEN;
