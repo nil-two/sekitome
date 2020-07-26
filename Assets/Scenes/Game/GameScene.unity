@@ -757,9 +757,9 @@ MonoBehaviour:
   quitGuideLabel: {fileID: 1847215780}
   lifeText: {fileID: 1271458139}
   scoreText: {fileID: 951825526}
-  initialLife: 5
+  initialLife: 20
   introSec: 1
-  spawnClockSec: 0.8
+  spawnClockSec: 0.5
   spawnClockSecMin: 0.1
   accerateSpawnClockClockSec: 2
   accerateSpawnClockSec: 0.01
