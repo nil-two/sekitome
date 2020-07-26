@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Nil2Behaviour : MonoBehaviour
 {
-    public float fowardSpeed;
     public Sprite nil2RedSprite;
     public Sprite nil2BlueSprite;
     public Sprite nil2GreenSprite;
@@ -15,6 +14,8 @@ public class Nil2Behaviour : MonoBehaviour
     public Sprite nil2WhiteSprite;
     public Sprite nil2GraySprite;
     public Sprite nil2BlackSprite;
+    public float fowardSpeed;
+    public float rotateSpeed;
 
     private Vector3 screenMinPos;
     private Vector3 screenMaxPos;
@@ -51,7 +52,7 @@ public class Nil2Behaviour : MonoBehaviour
     void Update()
     {
         transform.position += fowardVector * fowardSpeed * Time.deltaTime;
-        transform.Rotate(0f, 0f, -60f * Time.deltaTime);
+        transform.Rotate(0f, 0f, rotateSpeed * Time.deltaTime);
 
         if (transform.position.x < screenMinPos.x || transform.position.x > screenMaxPos.x)
         {

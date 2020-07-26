@@ -1098,7 +1098,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 8be5f7bc8cff8884494df6c68c299a17, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3aeaac7a3f119544d9d19118150740cf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1135,11 +1135,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed3f63fe1b7c2a04da4cf87935a7f5ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ishitsumikoUpSprite: {fileID: 21300000, guid: 8be5f7bc8cff8884494df6c68c299a17,
+  ishitsumikoUpSprite: {fileID: 21300000, guid: 3aeaac7a3f119544d9d19118150740cf,
     type: 3}
-  ishitsumikoLeftSprite: {fileID: 21300000, guid: 07e984f0cf5637a4b89b9edf8fa0b57a,
+  ishitsumikoLeftSprite: {fileID: 21300000, guid: 3aeaac7a3f119544d9d19118150740cf,
     type: 3}
-  ishitsumikoRightSprite: {fileID: 21300000, guid: f978dcbb4045ba64c9d57b1d1057fbf4,
+  ishitsumikoRightSprite: {fileID: 21300000, guid: 3aeaac7a3f119544d9d19118150740cf,
     type: 3}
 --- !u!114 &1765747302
 MonoBehaviour:
@@ -1327,7 +1327,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: cbefeb57996c95340919df2c36962a66, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d5efdde97212a68428b479cf08268209, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

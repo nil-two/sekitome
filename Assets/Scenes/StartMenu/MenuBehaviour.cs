@@ -7,6 +7,8 @@ public class MenuBehaviour : MonoBehaviour
 {
     public string dstSceneName;
     public bool isQuit;
+    public Color activeColor;
+    public Color inactiveColor;
 
     private Text text;
 
@@ -17,12 +19,12 @@ public class MenuBehaviour : MonoBehaviour
 
     public void Activate()
     {
-        text.color = new Color(1f, 1f, 1f, 1f);
+        text.color = activeColor;
     }
 
     public void Inactivate()
     {
-        text.color = new Color(0.8f, 0.8f, 0.8f, 1f);
+        text.color = inactiveColor;
     }
 
     public bool IsQuit()
