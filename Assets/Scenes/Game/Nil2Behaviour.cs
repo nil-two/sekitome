@@ -51,6 +51,7 @@ public class Nil2Behaviour : MonoBehaviour
     void Update()
     {
         transform.position += fowardVector * fowardSpeed * Time.deltaTime;
+        transform.Rotate(0f, 0f, -60f * Time.deltaTime);
 
         if (transform.position.x < screenMinPos.x || transform.position.x > screenMaxPos.x)
         {

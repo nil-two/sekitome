@@ -24,6 +24,11 @@ public class GameManager : MonoBehaviour
     public const int NIL2_TYPE_GRAY    = 9;
     public const int NIL2_TYPE_BLACK   = 10;
 
+    public Animator fade;
+    public float sceneTransitionSec;
+    public AudioClip gameBGM;
+    public AudioClip hitSE;
+    public AudioClip dropSE;
     public GameObject ishitsumiko;
     public GameObject nil2Prefab;
     public GameObject scoreUpdatedLabel;
@@ -31,14 +36,12 @@ public class GameManager : MonoBehaviour
     public GameObject quitGuideLabel;
     public Text lifeText;
     public Text scoreText;
-    public Animator fade;
     public int initialLife;
     public float introSec;
     public float spawnClockSec;
     public float spawnClockSecMin;
     public float accerateSpawnClockClockSec;
     public float accerateSpawnClockSec;
-    public float sceneTransitionSec;
     public int nil2RedScore;
     public int nil2BlueScore;
     public int nil2GreenScore;
@@ -63,6 +66,7 @@ public class GameManager : MonoBehaviour
     private Vector3 screenMinPos;
     private Vector3 screenMaxPos;
 
+    private SoundBehaviour sound;
     private int gameStatus;
     private int life;
     private int score;
@@ -85,6 +89,9 @@ public class GameManager : MonoBehaviour
 
         InvokeRepeating("SpawnNil2",          introSec+spawnClockSec,              spawnClockSec);
         InvokeRepeating("AccerateSpawnClock", introSec+accerateSpawnClockClockSec, accerateSpawnClockClockSec);
+
+        sound = SoundBehaviour.FindInstance();
+        sound.PlayBGMWithRestart(gameBGM);
     }
 
     void Update()
@@ -116,9 +123,6 @@ public class GameManager : MonoBehaviour
     {
         Destroy(ishitsumiko.GetComponent<PlayerController>());
         Destroy(ishitsumiko.GetComponent<IshitsumikoBehaviour>());
-
-        CancelInvoke("SpawnNil2");
-        CancelInvoke("AccerateSpawnClock");
 
         gameStatus = GAME_STATUS_FINISHED;
         restartGuideLabel.SetActive(true);
@@ -199,6 +203,7 @@ public class GameManager : MonoBehaviour
 
         score += GetNil2Score(nil2Type);
         scoreText.text = score.ToString();
+        sound.PlaySE(hitSE, 0.5f);
     }
 
     public void OnNil2DropEvent()
@@ -210,6 +215,7 @@ public class GameManager : MonoBehaviour
 
         life--;
         lifeText.text = life.ToString();
+        sound.PlaySE(dropSE);
 
         if (life <= 0)
         {

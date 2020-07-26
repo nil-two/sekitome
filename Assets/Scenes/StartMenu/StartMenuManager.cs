@@ -10,19 +10,29 @@ public class StartMenuManager : MonoBehaviour
     private const int MOVE_MENU_TYPE_ESCAPE = 2;
 
     public Animator fade;
-    public MenuBehaviour startMenu;
-    public MenuBehaviour resultMenu;
-    public MenuBehaviour quitMenu;
     public float sceneTransitionSec;
+    public AudioClip menuBGM;
+    public AudioClip selectSE;
+    public AudioClip moveSE;
+    public MenuBehaviour startMenu;
+    public MenuBehaviour resultsMenu;
+    public MenuBehaviour quitMenu;
 
+    private LastMenuIndexBehaviour lastMenuIndex;
+    private SoundBehaviour sound;
     private MenuBehaviour[] menus;
     private int menuI;
 
     void Start()
     {
-        menus = new MenuBehaviour[] {startMenu, resultMenu, quitMenu};
-        menuI = 0;
+        lastMenuIndex = LastMenuIndexBehaviour.FindInstance();
+
+        menus = new MenuBehaviour[] {startMenu, resultsMenu, quitMenu};
+        menuI = lastMenuIndex.GetIndex();
         UpdateMenu();
+
+        sound = SoundBehaviour.FindInstance();
+        sound.PlayBGM(menuBGM);
     }
 
     void Update()
@@ -50,10 +60,12 @@ public class StartMenuManager : MonoBehaviour
         if (moveMenuType == MOVE_MENU_TYPE_UP)
         {
             menuI--;
+            sound.PlaySE(moveSE, 0.3f);
         }
         else if (moveMenuType == MOVE_MENU_TYPE_DOWN)
         {
             menuI++;
+            sound.PlaySE(moveSE, 0.3f);
         }
         else if (moveMenuType == MOVE_MENU_TYPE_ESCAPE)
         {
@@ -65,6 +77,7 @@ public class StartMenuManager : MonoBehaviour
             else
             {
                 menuI = menus.Length - 1;
+                sound.PlaySE(moveSE, 0.3f);
             }
         }
 
@@ -91,6 +104,8 @@ public class StartMenuManager : MonoBehaviour
 
     void SelectMenu()
     {
+        sound.PlaySE(selectSE);
+
         var menu = menus[menuI];
         if (menu.IsQuit())
         {
@@ -101,6 +116,7 @@ public class StartMenuManager : MonoBehaviour
         var dstSceneName = menu.GetDstSceneName();
         if (dstSceneName != null)
         {
+            lastMenuIndex.SetIndex(menuI);
             MoveScene(dstSceneName);
             return;
         }

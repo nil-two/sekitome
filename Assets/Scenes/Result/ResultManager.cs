@@ -7,12 +7,18 @@ using UnityEngine.SceneManagement;
 public class ResultManager : MonoBehaviour
 {
     public Animator fade;
-    public Text resultsLabel;
     public float sceneTransitionSec;
+    public AudioClip menuBGM;
+    public Text resultsLabel;
+
+    private SoundBehaviour sound;
 
     void Start()
     {
         SetResultText();
+
+        sound = SoundBehaviour.FindInstance();
+        sound.PlayBGM(menuBGM);
     }
 
     void Update()
